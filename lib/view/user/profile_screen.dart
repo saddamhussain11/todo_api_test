@@ -19,19 +19,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   UserinfoController userinfoController = Get.put(UserinfoController());
-
+  final argument = Get.arguments;
   @override
   void initState() {
+    authcontroller.getCurrentUserData();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    nameController.text = argument['name'] ?? '';
+    emailController.text = argument['email'] ?? '';
     return Scaffold(
-      body: Column(
-        children: [
-          Flexible(
-            child: CustomContainer(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            CustomContainer(
               height: 295.h,
               width: double.infinity.w,
               backgroundColor: Appcolors.Colorgreen,
@@ -51,7 +54,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       CircleAvatar(
                         backgroundColor: Appcolors.Colorgrey,
                         maxRadius: 60.r,
-                        backgroundImage: NetworkImage(''),
+                        backgroundImage: NetworkImage(argument['avatar'] ?? ''),
                       ),
                       CircleAvatar(
                         maxRadius: 60.r,
@@ -73,125 +76,127 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 25.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 15.h),
-                Text(
-                  'Edit profile',
-                  style: TextStyle(
-                    fontSize: 19.sp,
-                    fontWeight: FontWeight.w500,
-                    color: Appcolors.Colorgreen,
-                  ),
-                ),
-                SizedBox(height: 15.h),
-                CustomTextfield(
-                  controller: nameController,
-                  color: Appcolors.Colorweight,
-                  border: true,
-                  borderColor: Appcolors.Colorweight,
-                  labeltext: '',
-                  inputType: TextInputType.text,
-                  obscuretext: false,
-                  sufixicon: Icon(Icons.edit),
-                ),
-                SizedBox(height: 15.h),
-                CustomTextfield(
-                  controller: emailController,
-                  color: Appcolors.Colorweight,
-                  border: true,
-                  borderColor: Appcolors.Colorweight,
-                  labeltext: '',
-                  inputType: TextInputType.text,
-                  obscuretext: false,
-                  readonly: true,
-                ),
-                SizedBox(height: 25.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'More',
-                      style: TextStyle(
-                        fontSize: 19.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Appcolors.Colorgreen,
-                      ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 25.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 15.h),
+                  Text(
+                    'Edit profile',
+                    style: TextStyle(
+                      fontSize: 19.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Appcolors.Colorgreen,
                     ),
-                    InkWell(
-                      onTap: () {
-                        // userinfoController.updateuserinfo(
-                        //     nameController, userid);
-                        // userinfoController.getuserinfo();
-                      },
-                      child: Text(
-                        'Save',
+                  ),
+                  SizedBox(height: 15.h),
+                  CustomTextfield(
+                    controller: nameController,
+                    color: Appcolors.Colorweight,
+                    border: true,
+                    borderColor: Appcolors.Colorweight,
+                    labeltext: '',
+                    inputType: TextInputType.text,
+                    obscuretext: false,
+                    sufixicon: Icon(Icons.edit),
+                  ),
+                  SizedBox(height: 15.h),
+                  CustomTextfield(
+                    controller: emailController,
+                    color: Appcolors.Colorweight,
+                    border: true,
+                    borderColor: Appcolors.Colorweight,
+                    labeltext: '',
+                    inputType: TextInputType.text,
+                    obscuretext: false,
+                    readonly: true,
+                  ),
+                  SizedBox(height: 25.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'More',
                         style: TextStyle(
                           fontSize: 19.sp,
                           fontWeight: FontWeight.w500,
                           color: Appcolors.Colorgreen,
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 45.h),
-                Row(
-                  children: [
-                    Icon(Icons.privacy_tip),
-                    SizedBox(width: 10.w),
-                    Text(
-                      'Privacy policy',
-                      style: TextStyle(
-                        fontSize: 19.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Appcolors.Colorblack,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 15.h),
-                Row(
-                  children: [
-                    Icon(Icons.twenty_four_mp_sharp),
-                    SizedBox(width: 10.w),
-                    Text(
-                      'terms and Conditions',
-                      style: TextStyle(
-                        fontSize: 19.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Appcolors.Colorblack,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 15.h),
-                InkWell(
-                  onTap: () {},
-                  // authcontroller.logout(),
-                  child: Row(
-                    children: [
-                      Icon(Icons.logout, color: Appcolors.Colorlitered),
-                      SizedBox(width: 10.w),
-                      Text(
-                        'logout',
-                        style: TextStyle(
-                          fontSize: 19.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Appcolors.Colorlitered,
+                      InkWell(
+                        onTap: () {
+                          authcontroller.editCurrentUserData(
+                            argument['id'] ?? '',
+                            nameController.text,
+                          );
+                          authcontroller.getCurrentUserData();
+                        },
+                        child: Text(
+                          'Save',
+                          style: TextStyle(
+                            fontSize: 19.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Appcolors.Colorgreen,
+                          ),
                         ),
                       ),
                     ],
                   ),
-                ),
-              ],
+                  SizedBox(height: 45.h),
+                  Row(
+                    children: [
+                      Icon(Icons.privacy_tip),
+                      SizedBox(width: 10.w),
+                      Text(
+                        'Privacy policy',
+                        style: TextStyle(
+                          fontSize: 19.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Appcolors.Colorblack,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 15.h),
+                  Row(
+                    children: [
+                      Icon(Icons.twenty_four_mp_sharp),
+                      SizedBox(width: 10.w),
+                      Text(
+                        'terms and Conditions',
+                        style: TextStyle(
+                          fontSize: 19.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Appcolors.Colorblack,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 15.h),
+                  InkWell(
+                    onTap: () {},
+                    // authcontroller.logout(),
+                    child: Row(
+                      children: [
+                        Icon(Icons.logout, color: Appcolors.Colorlitered),
+                        SizedBox(width: 10.w),
+                        Text(
+                          'logout',
+                          style: TextStyle(
+                            fontSize: 19.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Appcolors.Colorlitered,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

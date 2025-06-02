@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:todo_api_test/constant/appcolors.dart';
 import 'package:todo_api_test/controller/Ui/theme_controller.dart';
+import 'package:todo_api_test/controller/backend/authcontroller.dart';
 import 'package:todo_api_test/controller/backend/todomodel_controller.dart';
 import 'package:todo_api_test/controller/backend/userinfo_controller.dart';
 import 'package:todo_api_test/module/todolist_model.dart';
@@ -25,7 +26,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   TodomodelController todomodelController = Get.put(TodomodelController());
-  UserinfoController userinfoController = Get.put(UserinfoController());
+  Authcontroller authcontroller = Get.put(Authcontroller());
   ThemeController themeController = Get.put(ThemeController());
   final Random random = Random();
 
@@ -38,12 +39,12 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // @override
-  // void initState() {
-  //   todomodelController.gettodo();
-  //   userinfoController.getuserinfo();
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    // todomodelController.gettodo();
+    authcontroller.getCurrentUserData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,13 +72,18 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 SizedBox(height: 40.h),
                 Obx(() {
-                  if (userinfoController.isLoading.value == true) {
+                  if (authcontroller.isLoading.value == true) {
                     return LoadingUtil.shimmerTile(itemcount: 1);
-                  }
-                  //  else if (userinfoController.userinfolist.isEmpty) {
-                  //   return Center(child: Text('No Products Found'));
-                  // }
-                  else {
+                  } else if (authcontroller.currentUser.isEmpty) {
+                    return Center(
+                      child: IconButton(
+                        onPressed: () {
+                          authcontroller.getCurrentUserData();
+                        },
+                        icon: Icon(Icons.panorama),
+                      ),
+                    );
+                  } else {
                     return Column(
                       children: [
                         InkWell(
@@ -90,20 +96,31 @@ class _HomeScreenState extends State<HomeScreen> {
                             //         .userinfolist.first.email,
                             //     image: userinfoController
                             //         .userinfolist.first.image);
-                            // Get.to(ProfileScreen(), arguments: userModel);
-                            Get.to(ProfileScreen());
+                            Get.to(
+                              ProfileScreen(),
+                              arguments: {
+                                'name':
+                                    authcontroller.currentUser.first['name'],
+                                'email':
+                                    authcontroller.currentUser.first['email'],
+                                'avatar':
+                                    authcontroller.currentUser.first['avatar'],
+                                'id': authcontroller.currentUser.first['id'],
+                              },
+                            );
+                            // Get.to(ProfileScreen());
                           },
                           child: CircleAvatar(
                             backgroundColor: Appcolors.Colorweight,
                             maxRadius: 60.r,
                             backgroundImage: NetworkImage(
-                              'userinfoController.userinfolist.first.image',
+                              authcontroller.currentUser.first['avatar'],
                             ),
                           ),
                         ),
                         SizedBox(height: 25.h),
                         Text(
-                          'userinfoController.userinfolist.first.name',
+                          authcontroller.currentUser.first['name'],
                           style: TextStyle(
                             fontSize: 20.sp,
                             fontWeight: FontWeight.w500,

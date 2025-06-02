@@ -115,10 +115,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 44.h,
                           backgroundColor: Appcolors.Colorgreen,
                           ontap: () {
-                            Get.to(HomeScreen());
+                            if (_formkey.currentState!.validate()) {
+                              authcontroller.login(
+                                emailcontroler.text,
+                                paswordcontroler.text,
+                              );
+                            }
                           },
-                          //  => authcontroller.signIn(
-                          //     _formkey, paswordcontroler, emailcontroler),
+
                           title: 'Log in',
                           isLoading: authcontroller.isLoading.value,
                         ),
