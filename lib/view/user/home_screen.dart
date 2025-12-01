@@ -41,8 +41,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    // todomodelController.gettodo();
-    authcontroller.getCurrentUserData();
+    todomodelController.gettodo();
+
     super.initState();
   }
 
@@ -150,15 +150,13 @@ class _HomeScreenState extends State<HomeScreen> {
           Obx(() {
             if (todomodelController.isloading.value == true) {
               return LoadingUtil.shimmerTile(itemcount: 8);
-            }
-            //  else if (todomodelController.todolist.isEmpty) {
-            //   return Center(child: Text('No Products Found'));
-            // }
-            else {
+            } else if (todomodelController.todolist.isEmpty) {
+              return Center(child: Text('No Products Found'));
+            } else {
               return Expanded(
                 child: ListView.builder(
                   padding: EdgeInsets.zero,
-                  itemCount: 1,
+                  itemCount: todomodelController.todolist.length,
                   itemBuilder: (_, index) {
                     return Padding(
                       padding: EdgeInsets.all(8.sp), // Responsive padding
@@ -170,26 +168,31 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: ListTile(
                           style: theme.listTileTheme.style,
                           onTap: () {
-                            // TodolistModel todolistModel = TodolistModel(
-                            //   docid: todomodelController.todolist[index].docid,
-                            //   userid: userId,
-                            //   title: todomodelController.todolist[index].title,
-                            //   description:
-                            //       todomodelController
-                            //           .todolist[index]
-                            //           .description,
-                            //   Time: DateTimeUtil.formatTime(
-                            //     todomodelController.todolist[index].Time,
-                            //   ),
-                            // );
-                            Get.to(DetailScreen());
+                            TodolistModel todolistModel = TodolistModel(
+                              id: todomodelController.todolist[index].id,
+
+                              title: todomodelController.todolist[index].title,
+                              description:
+                                  todomodelController
+                                      .todolist[index]
+                                      .description,
+                              createdAt: DateTimeUtil.formatTime(
+                                todomodelController.todolist[index].createdAt
+                                    .toString(),
+                              ),
+                            );
+                            Get.to(
+                              DetailScreen(),
+                              arguments: todomodelController.todolist[index],
+                            );
                           },
                           leading: GestureDetector(
                             onTap: () async {
-                              // final String docid =
-                              //     todomodelController.todolist[index].docid;
-                              // todomodelController.delettodo(docid);
-                              // todomodelController.gettodo();
+                              final String docid =
+                                  todomodelController.todolist[index].id
+                                      .toString();
+                              todomodelController.delettodo(docid);
+                              todomodelController.gettodo();
                             },
                             child: CircleAvatar(
                               backgroundColor: Colors.red,
@@ -197,16 +200,18 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           title: Text(
-                            'todomodelController.todolist[index].title',
+                            todomodelController.todolist[index].title
+                                .toString(),
                           ),
                           subtitle: Text(
-                            'todomodelController.todolist[index].description',
+                            todomodelController.todolist[index].description
+                                .toString(),
                           ),
                           trailing: Text(
-                            'text',
-                            // DateTimeUtil.formatTime(
-                            //   todomodelController.todolist[index].Time,
-                            // ),
+                            DateTimeUtil.formatTime(
+                              todomodelController.todolist[index].createdAt
+                                  .toString(),
+                            ),
                           ),
                         ),
                       ),

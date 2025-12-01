@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:todo_api_test/controller/Ui/theme_controller.dart';
 import 'package:todo_api_test/theme/theme_data.dart';
 import 'package:todo_api_test/view/auth/splash_screen.dart';
+import 'package:todo_api_test/view/user/home_screen.dart';
 
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(
@@ -45,7 +46,7 @@ class _MyAppState extends State<MyApp> {
           themeMode:
               themeController.isdark.value ? ThemeMode.dark : ThemeMode.light,
           debugShowCheckedModeBanner: false,
-          home: SplashScreen(),
+          home: HomeScreen(),
         );
       },
     );

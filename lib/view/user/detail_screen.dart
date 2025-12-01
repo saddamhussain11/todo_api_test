@@ -33,27 +33,28 @@ class _DetailScreenState extends State<DetailScreen> {
                   icon: Icon(Icons.arrow_circle_left_outlined, size: 35.sp),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.to(EditScreen(), arguments: arguments);
+                  },
                   icon: Icon(Icons.edit_note, size: 40.sp),
                 ),
               ],
             ),
             SizedBox(height: 70.h),
-            // Text(arguments.title, style: theme.textTheme.bodyLarge),
+            Text(arguments.title.toString(), style: theme.textTheme.bodyLarge),
             SizedBox(height: 10.h),
             Divider(thickness: 3.h),
             SizedBox(height: 40.h),
             Text(
-              '',
-              // arguments.description,
-              // style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500),
+              arguments.description.toString(),
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500),
             ),
             SizedBox(height: 20.h),
             Text(
-              '',
-              //  textAlign: TextAlign.right,
-              // arguments.Time,
-              //  style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w500),
+              arguments.createdAt.toString(),
+              textAlign: TextAlign.right,
+
+              style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w500),
             ),
           ],
         ),

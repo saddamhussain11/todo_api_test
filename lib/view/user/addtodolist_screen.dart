@@ -28,107 +28,114 @@ class _AddtodolistScreenState extends State<AddtodolistScreen> {
     return AbsorbPointer(
       absorbing: todomodelController.isloading.value,
       child: Scaffold(
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: 172.h),
-              Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Welcome Onboard!',
-                      style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w500,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 172.h),
+                Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Welcome Onboard!',
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 31.h),
-                    Image.asset(Appimages.addto),
-                    SizedBox(height: 25.h),
-                    Text(
-                      'Add What your want to do later on..',
-                      style: TextStyle(
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Appcolors.Colorgreen,
+                      SizedBox(height: 31.h),
+                      Image.asset(Appimages.addto),
+                      SizedBox(height: 25.h),
+                      Text(
+                        'Add What your want to do later on..',
+                        style: TextStyle(
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Appcolors.Colorgreen,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 35.h),
-                    Form(
-                      key: _formkey,
-                      child: Column(
-                        spacing: 26.h,
-                        children: [
-                          CustomTextfield(
-                            controller: titlecontroler,
-                            width: 320.w,
-                            color: Appcolors.Colorweight,
-                            labeltext: 'title',
-                            inputType: TextInputType.text,
-                            obscuretext: false,
-                            validator: (value) {
-                              if (value == '' || value == null) {
-                                return 'Please enter your title';
-                              }
-                              return null;
-                            },
-                          ),
-                          CustomTextfield(
-                            controller: descriptioncontroler,
-                            width: 320.w,
-                            color: Appcolors.Colorweight,
-                            labeltext: 'Description',
-                            inputType: TextInputType.text,
-                            obscuretext: false,
-                            validator: (value) {
-                              if (value == '' || value == null) {
-                                return 'Please enter your descipton';
-                              }
-                              return null;
-                            },
-                          ),
-                          SizedBox(height: 15.h),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => HomeScreen(),
+                      SizedBox(height: 35.h),
+                      Form(
+                        key: _formkey,
+                        child: Column(
+                          spacing: 26.h,
+                          children: [
+                            CustomTextfield(
+                              controller: titlecontroler,
+                              width: 320.w,
+                              color: Appcolors.Colorweight,
+                              labeltext: 'title',
+                              inputType: TextInputType.text,
+                              obscuretext: false,
+                              validator: (value) {
+                                if (value == '' || value == null) {
+                                  return 'Please enter your title';
+                                }
+                                return null;
+                              },
+                            ),
+                            CustomTextfield(
+                              controller: descriptioncontroler,
+                              width: 320.w,
+                              color: Appcolors.Colorweight,
+                              labeltext: 'Description',
+                              inputType: TextInputType.text,
+                              obscuretext: false,
+                              validator: (value) {
+                                if (value == '' || value == null) {
+                                  return 'Please enter your descipton';
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 15.h),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => HomeScreen(),
+                                  ),
+                                );
+                              },
+                              child: Obx(
+                                () => Custombuton(
+                                  isLoading:
+                                      todomodelController.isloading.value,
+                                  width: 220.w,
+                                  height: 44.h,
+                                  backgroundColor: Appcolors.Colorgreen,
+                                  ontap: () {
+                                    if (_formkey.currentState!.validate()) {
+                                      todomodelController.addtodo(
+                                        titlecontroler.text,
+                                        descriptioncontroler.text,
+                                      );
+                                      todomodelController.gettodo();
+                                    }
+
+                                    // todomodelController.addtodo(
+                                    //     titlecontroler,
+                                    //     descriptioncontroler,
+                                    //     DateTime.now().toString(),
+                                    //     _formkey);
+                                    // todomodelController.gettodo();
+                                  },
+                                  title: 'Add to list',
                                 ),
-                              );
-                            },
-                            child: Obx(
-                              () => Custombuton(
-                                isLoading: todomodelController.isloading.value,
-                                width: 220.w,
-                                height: 44.h,
-                                backgroundColor: Appcolors.Colorgreen,
-                                ontap: () {
-                                  todomodelController.addtodo(
-                                    titlecontroler.text,
-                                    descriptioncontroler.text,
-                                  );
-                                  // todomodelController.addtodo(
-                                  //     titlecontroler,
-                                  //     descriptioncontroler,
-                                  //     DateTime.now().toString(),
-                                  //     _formkey);
-                                  // todomodelController.gettodo();
-                                },
-                                title: 'Add to list',
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

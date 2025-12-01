@@ -22,8 +22,8 @@ class _DetailScreenState extends State<EditScreen> {
   @override
   void initState() {
     final TodolistModel argument = Get.arguments;
-    // titlecontroler.text = argument.title;
-    // descriptioncontroler.text = argument.description;
+    titlecontroler.text = argument.title.toString();
+    descriptioncontroler.text = argument.description.toString();
 
     super.initState();
   }
@@ -80,10 +80,13 @@ class _DetailScreenState extends State<EditScreen> {
                       title: 'Update',
                       isLoading: todomodelController.isloading.value,
                       ontap: () async {
-                        // final String docid = argument.docid;
-                        // await todomodelController.updatetodo(
-                        //     titlecontroler, descriptioncontroler, docid);
-                        // todomodelController.gettodo();
+                        final String id = argument.id.toString();
+                        await todomodelController.edittodo(
+                          id,
+                          titlecontroler.text,
+                          descriptioncontroler.text,
+                        );
+                        todomodelController.gettodo();
                       },
                     ),
                   ),
